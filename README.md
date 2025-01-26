@@ -1,47 +1,62 @@
 DRISHTI — Android App for Blind Persons
+Empowering the visually impaired with technology.
 
+DRISHTI is an innovative Android application designed to assist visually impaired individuals in navigating their surroundings and understanding their environment using just their mobile phone's camera and an internet connection.
 
-⭕ DRISHTI is an innovative Android application designed to assist visually impaired individuals in navigating their surroundings and understanding their environment using just their mobile phone's camera and internet.
+This app features three core modes to enhance accessibility and independence.
+
 Features
-This app includes three key modes to assist users:
-
 1️⃣ Navigation Mode
-
-Upon launching the app, the Navigation Mode is activated by default.
-It provides guidance for users to navigate their surroundings effectively.
+Purpose: Helps users navigate their surroundings effectively.
+How it Works:
+Upon launching, the app activates the Navigation Mode by default.
+Provides real-time guidance and object detection to assist users in identifying obstacles and moving around safely.
 2️⃣ Assistant Mode
-
-Activated with a double-tap in Navigation Mode.
-In this mode, users can ask various questions about their environment, such as:
+Purpose: Enables users to interact with their environment using voice commands.
+How it Works:
+Activated by a double-tap in Navigation Mode.
+Users can ask questions about their environment, such as:
 "What is the color of the car?"
 "What does the signboard say?"
-"How is the weather?"
-General questions like, "Who is Elon Musk?"
+"How is the weather today?"
+Supports general queries like:
+"Who is Elon Musk?"
 3️⃣ Reading Mode
+Purpose: Assists users in reading printed or visible text.
+How it Works:
+Detects text from books, signboards, or any visible object using the phone's camera.
+Reads the detected text aloud to the user, making reading accessible without assistance.
+Setup Instructions
+To get started with DRISHTI, follow these steps:
 
-Helps users read text from books, signboards, or any visible object.
-The app detects and reads text aloud for the user.
-Setup
-⭕ To set up this app, you will need one mandatory dependency: Gemini AI API Key. This API powers the app's core functionalities.
-
-Steps to Set Up:
-1️⃣ Clone the repository from GitHub.
-2️⃣ Open the project in Android Studio.
-3️⃣ Add your Gemini AI API key in the following files:
-
+1️⃣ Clone the Repository
+bash
+Copy
+Edit
+git clone https://github.com/your-username/drishti.git
+2️⃣ Open the Project
+Open the project in Android Studio.
+3️⃣ Add Your API Key
+Obtain a Gemini AI API Key:
+Visit the Gemini AI Developer Console to generate your API key.
+Add the API key to the following files:
 GeminiAI.kt
 GeminiAI1.kt
 GeminiAI2.kt
-👉 Get your Gemini API Key:
-Visit Gemini AI Developer Console to obtain an API key. There’s no need to create a new model, as one is already configured for this app.
-
-
-
 How to Use
 Install the app on an Android device or emulator.
-Launch the app, and start exploring with Navigation Mode.
+Launch the app:
+Start exploring with Navigation Mode.
 Switch to Assistant Mode for environment-related queries.
-Use Reading Mode for reading signboards, books, or any printed text.
-Feedback
-Feel free to collaborate and provide feedback! Let me know how this app can be improved or what additional features can be added to make it more effective for visually impaired users.
+Use Reading Mode to read signboards, books, or any printed text aloud.
+Interact seamlessly with your surroundings using DRISHTI.
+Feedback and Contributions
+We welcome collaboration and feedback to make DRISHTI even better!
+
+Share your thoughts on potential improvements.
+Suggest additional features to enhance the experience for visually impaired users.
+Author
+Developed with ❤️ by Your Name.
+
+Feel free to fork, contribute, and help us make this application a life-changing tool for those in need.
 
