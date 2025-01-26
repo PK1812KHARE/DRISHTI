@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="primary_200">#90CAF9</color> <!-- Light Blue -->
+    <color name="primary_500">#2196F3</color> <!-- Bright Blue -->
+    <color name="primary_700">#1565C0</color> <!-- Deep Blue -->
+
+    <!-- Secondary Colors -->
+    <color name="secondary_200">#FFAB91</color> <!-- Light Coral -->
+    <color name="secondary_500">#FF5722</color> <!-- Vibrant Orange -->
+    <color name="secondary_700">#D84315</color> <!-- Deep Orange -->
+
+    <!-- Neutral Colors -->
+    <color name="background_light">#FFFFFF</color> <!-- Pure White -->
+    <color name="background_dark">#121212</color> <!-- Almost Black -->
+    <color name="text_light">#E0E0E0</color> <!-- Light Gray -->
+    <color name="text_dark">#212121</color> <!-- Dark Gray -->
+
+    <!-- Accent Colors -->
+    <color name="accent_teal">#64FFDA</color> <!-- Vibrant Teal -->
+    <color name="accent_purple">#D500F9</color> <!-- Neon Purple -->
+
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#FF8A80</color> <!-- Coral Red -->
+    <color name="gradient_end">#8C9EFF</color> <!-- Indigo Blue -->
+
+    <!-- Success & Error Colors -->
+    <color name="success_light">#81C784</color> <!-- Light Green -->
+    <color name="success">#388E3C</color> <!-- Standard Green -->
+    <color name="error_light">#E57373</color> <!-- Light Red -->
+    <color name="error">#D32F2F</color> <!-- Deep Red -->
+
+    <!-- Divider & Border Colors -->
+    <color name="divider_light">#BDBDBD</color> <!-- Light Gray -->
+    <color name="divider_dark">#424242</color> <!-- Dark Gray -->
+
+    <!-- Background Overlays -->
+    <color name="overlay_light">#80FFFFFF</color> <!-- White with Transparency -->
+    <color name="overlay_dark">#80000000</color> <!-- Black with Transparency -->
+</resources>
