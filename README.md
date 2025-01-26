@@ -56,7 +56,7 @@ We welcome collaboration and feedback to make DRISHTI even better!
 Share your thoughts on potential improvements.
 Suggest additional features to enhance the experience for visually impaired users.
 Author
-Developed with ❤️ by Your Name.
+Developed with ❤️ by PATHIK.
 
 Feel free to fork, contribute, and help us make this application a life-changing tool for those in need.
 
