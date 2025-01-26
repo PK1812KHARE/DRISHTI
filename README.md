@@ -1,7 +1,7 @@
-Blind Nav — Android App for Blind Persons
+DRISHTI — Android App for Blind Persons
 
 
-⭕ Blind Nav is an innovative Android application designed to assist visually impaired individuals in navigating their surroundings and understanding their environment using just their mobile phone's camera and internet.
+⭕ DRISHTI is an innovative Android application designed to assist visually impaired individuals in navigating their surroundings and understanding their environment using just their mobile phone's camera and internet.
 Features
 This app includes three key modes to assist users:
 
