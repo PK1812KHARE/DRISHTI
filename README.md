@@ -59,4 +59,4 @@ Author
 Developed with ❤️ by PATHIK.
 
 Feel free to fork, contribute, and help us make this application a life-changing tool for those in need.
-
+Lets make blind people strong
