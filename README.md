@@ -9,7 +9,7 @@ This app features **three core modes** to enhance accessibility and independence
 
 ## **✨ Features**
 ### **1️⃣ Navigation Mode**  
-**🎯 Purpose:** Helps users navigate their surroundings effectively.  
+**🎯 Purpose:** Helps users navigate their surroundings effectively.
 **🛠️ How it Works:**  
 - Upon launching, the app **activates the Navigation Mode** by default.  
 - Provides **real-time guidance and object detection** to assist users in identifying obstacles.  
