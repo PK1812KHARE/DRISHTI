@@ -58,6 +58,57 @@ fun BlindModeScreen() {
                     ) == PackageManager.PERMISSION_GRANTED
         )
     }
+    @Composable
+    fun BlindModeScreen() {
+        val context = LocalContext.current
+        val coroutineScope = rememberCoroutineScope()
+
+        // State variables to track the responses
+        var currentMode by remember { mutableStateOf("navigation") }
+        var chatResponse by remember { mutableStateOf("Awaiting command...") }
+        var navigationResponse by remember { mutableStateOf("Proceed ahead for 10 meters.") }
+        var readingModeResult by remember { mutableStateOf("Reading mode activated.") }
+        var lastSpokenIndex by remember { mutableStateOf(0) }
+        var aiResponse by remember { mutableStateOf("") }  // Store dynamic responses here
+
+        val tts = remember {
+            mutableStateOf<TextToSpeech?>(
+                TextToSpeech(context) { status ->
+                    if (status != TextToSpeech.ERROR) {
+
+
+                    }
+                }
+            )
+        }
+
+        Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            Button(
+                onClick = {
+                    coroutineScope.launch {
+                        // Simulate an AI response from an API (replace this with actual API call)
+                        aiResponse = sendMessageToGeminiAI("What is my location?", navigationResponse)
+                        chatResponse = aiResponse  // Update the response dynamically
+                        tts.value?.speak(aiResponse, TextToSpeech.QUEUE_FLUSH, null, null)
+                    }
+                },
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text("Fetch AI Response")
+            }
+
+            // Pass updated variables to AIResponseOverlay
+            AIResponseOverlay(
+                currentMode = currentMode,
+                navigationResponse = navigationResponse,
+                chatResponse = chatResponse,
+                readingModeResult = readingModeResult,
+                tts = tts.value,
+                lastSpokenIndex = lastSpokenIndex,
+                response = aiResponse
+            )
+        }
+    }
     var currentMode by remember { mutableStateOf("navigation") }
     var overlayText by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
@@ -73,6 +124,12 @@ fun BlindModeScreen() {
     var chatResponse by remember { mutableStateOf("") }
     var isReadingMode by remember { mutableStateOf(false) }
     var readingModeResult by remember { mutableStateOf("") }
+    // State variables to track the responses
+
+    var navigationResponse by remember { mutableStateOf("Proceed ahead for 10 meters.") }
+
+    var aiResponse by remember { mutableStateOf("") }  // This will store API responses dynamically.
+
 
     val speechRecognizer = remember { SpeechRecognizer.createSpeechRecognizer(context) }
     val speechIntent = remember {
@@ -85,16 +142,45 @@ fun BlindModeScreen() {
     LaunchedEffect(context) {
         tts.value = TextToSpeech(context) { status ->
             if (status != TextToSpeech.ERROR) {
-                tts.value?.language = Locale.US
-                tts.value?.setSpeechRate(1.5f) // Increase the speech rate
+                // Set English as the default language
+                val result = tts.value?.setLanguage(Locale.US)
+
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    tts.value?.speak(
+                        "English language not supported on this device.",
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        null
+                    )
+                } else {
+                    // Set custom speed and pitch for the assistant's voice
+                    tts.value?.setSpeechRate(1.2f)  // Adjust the speech rate (1.0 is normal)
+                    tts.value?.setPitch(0.9f)       // Slightly deeper pitch for a male voice
+
+                    // Set a custom male voice if available
+                    val availableVoices = tts.value?.voices
+                    availableVoices?.let {
+                        val maleVoice = it.find { voice ->
+                            voice.name.contains("male", ignoreCase = true) ||
+                                    voice.name.contains("en", ignoreCase = true) ||
+                                    voice.name.contains("man", ignoreCase = true)
+                        } ?: it.first()  // Fallback to the first voice if no male voice is found
+
+                        tts.value?.voice = maleVoice
+                    }
+
+                    // Speak an initial message to confirm setup
+                    tts.value?.speak(
+                        "Hello, I am your assistant. And my name is Jimmy. I am delighted to be presented at SRM Techno hackathon. How are you, panelists? I am happy to meet you all. I will not take much of your time. I am an AI assistant to help visually impaired people. Please hold the camera in the direction where you want to navigate.",
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        null
+                    )
+                }
             }
         }
     }
-    DisposableEffect(Unit) {
-        onDispose {
-            cameraExecutor.shutdown()
-        }
-    }
+
 
     DisposableEffect(Unit) {
         onDispose {
@@ -103,6 +189,11 @@ fun BlindModeScreen() {
             speechRecognizer.destroy()
         }
     }
+    // Add this function in the same file
+    fun suddenAlert(tts: TextToSpeech?, alertMessage: String) {
+        tts?.speak(alertMessage, TextToSpeech.QUEUE_FLUSH, null, null)
+    }
+
 
     LaunchedEffect(Unit) {
         speechRecognizer.setRecognitionListener(object : RecognitionListener {

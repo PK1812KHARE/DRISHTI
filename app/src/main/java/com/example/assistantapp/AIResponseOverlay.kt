@@ -2,31 +2,23 @@ package com.example.assistantapp
 
 import android.speech.tts.TextToSpeech
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
-
 
 @Composable
 fun AIResponseOverlay(
@@ -38,25 +30,15 @@ fun AIResponseOverlay(
     lastSpokenIndex: Int,
     response: String
 ) {
-    val context = LocalContext.current
-    var isConnected = remember { mutableStateOf(isInternetAvailable(context)) }
-    var currentIndex by remember { mutableStateOf(lastSpokenIndex) } // Track the current sentence index
-    val sentences = response.split(".") // Split the response into sentences
-    var lastSpokenText by remember { mutableStateOf("") } // Track the last spoken text
+    var currentIndex by remember { mutableStateOf(lastSpokenIndex) }
+    val sentences = response.split(".")
+    var lastSpokenText by remember { mutableStateOf("") }
 
-    // Continuously check internet connectivity
+    // Automatically cycle through sentences every 8 seconds
     LaunchedEffect(Unit) {
         while (true) {
-            isConnected.value = isInternetAvailable(context)
-            delay(5000) // Check every 5 seconds
-        }
-    }
-
-    // Skip to the next sentence every 8 seconds
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(8000) // Wait for 8 seconds
-            if (isConnected.value && sentences.isNotEmpty()) {
+            delay(8000)
+            if (sentences.isNotEmpty()) {
                 currentIndex = (currentIndex + 1) % sentences.size
                 val newText = sentences[currentIndex].trim()
                 if (newText.isNotEmpty() && newText != lastSpokenText) {
@@ -67,100 +49,65 @@ fun AIResponseOverlay(
         }
     }
 
-    LaunchedEffect(response) {
-        val newText = sentences[currentIndex].trim()
-        if (newText.isNotEmpty() && newText != lastSpokenText) {
-            tts?.speak(newText, TextToSpeech.QUEUE_ADD, null, null)
-            lastSpokenText = newText
-        }
-    }
-
-    LaunchedEffect(currentMode, navigationResponse, chatResponse, readingModeResult) {
-        when (currentMode) {
-            "navigation" -> {
-                val newText = navigationResponse.substring(lastSpokenIndex)
-                tts?.speak(newText, TextToSpeech.QUEUE_ADD, null, null)
-            }
-            "assistant" -> {
-                // Don't automatically speak in assistant mode
-            }
-            "reading" -> {
-                // Don't automatically speak in reading mode
-            }
-        }
-    }
-
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.CenterHorizontally
+        contentAlignment = Alignment.BottomCenter
     ) {
-        if (!isConnected.value) {
-            Box(
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(220.dp)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF1976D2),  // Blue shade
+                            Color(0xFF004BA0)
+                        )
+                    )
+                ),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xAA000000)),
+            elevation = CardDefaults.cardElevation(8.dp)
+        ) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .background(Color(0x88000000))
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
                     .padding(16.dp),
-                contentAlignment = Alignment.Center
+                verticalArrangement = Arrangement.Top
             ) {
-                Text(
-                    text = "You are not connected to the internet",
-                    color = Color.Red,
-                    fontSize = 20.sp,
-                    modifier = Modifier.padding(8.dp)
-                )
-                tts?.speak("You are not connected to the internet", TextToSpeech.QUEUE_FLUSH, null, null)
-            }
-        } else {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .background(Color(0x88000000))
-                    .padding(16.dp),
-                contentAlignment = Alignment.TopStart
-            ) {
-                val scrollState = rememberScrollState()
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(scrollState)
-                ) {
-                    when (currentMode) {
-                        "reading" -> {
-                            Text(
-                                text = "Reading: $readingModeResult",
-                                color = Color.White,
-                                fontSize = 16.sp,
-                                fontStyle = FontStyle.Italic,
-                                modifier = Modifier
-                                    .background(Color(0xAA000000))
-                                    .padding(8.dp)
-                            )
-                        }
-                        "assistant" -> {
-                            Text(
-                                text = "Chat: $chatResponse",
-                                color = Color.White,
-                                fontSize = 16.sp,
-                                fontStyle = FontStyle.Italic,
-                                modifier = Modifier
-                                    .background(Color(0xAA000000))
-                                    .padding(8.dp)
-                            )
-                        }
-                        "navigation" -> {
-                            Text(
-                                text = navigationResponse,
-                                color = Color.White,
-                                fontSize = 16.sp,
-                                fontStyle = FontStyle.Italic,
-                                modifier = Modifier.padding(8.dp)
-                            )
-                        }
+                when (currentMode) {
+                    "reading" -> {
+                        Text(
+                            text = "📖 Reading: $readingModeResult",
+                            color = Color.White,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontStyle = FontStyle.Italic,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+                    "assistant" -> {
+                        Text(
+                            text = "🤖 Chat: $chatResponse",
+                            color = Color.White,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontStyle = FontStyle.Italic,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+                    "navigation" -> {
+                        Text(
+                            text = "🧭 Navigation: $navigationResponse",
+                            color = Color.White,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontStyle = FontStyle.Italic,
+                            modifier = Modifier.padding(8.dp)
+                        )
                     }
                 }
             }
