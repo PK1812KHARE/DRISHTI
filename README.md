@@ -37,4 +37,4 @@ This app features **three core modes** to enhance accessibility and independence
 - Reads the detected **text aloud** to the user, making reading accessible without assistance.
 
 ---
-Made with love by pathik
+Made with love by Pathik and Prasham
